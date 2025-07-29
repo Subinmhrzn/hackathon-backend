@@ -11,15 +11,15 @@ export class DoctorKycService{
         @InjectModel(DoctorKyc.name) private readonly doctorkycMode : Model<DoctorKycDocument>
     ){}
 
-    async create(userId:string,createDoctorKycDto: CreateDoctorKycDto) : Promise<DoctorKyc>{
-        const existingDoctor = await this.doctorkycMode.findOne({userId: createDoctorKycDto.licenseNumber});
+    async create(licenseNumber:string,createDoctorKycDto: CreateDoctorKycDto) : Promise<DoctorKyc>{
+        const existingDoctor = await this.doctorkycMode.findOne({licenseNumber: createDoctorKycDto.licenseNumber});
         if(existingDoctor){
-            throw new BadRequestException("This Doctor ID kyc has already been submitted")
+            throw new BadRequestException("This Doctor Lincese number has already been registered")
         }
         
         const doc = new this.doctorkycMode({
             ...createDoctorKycDto,
-            userId
+            licenseNumber
         })
         return doc.save()
     }
