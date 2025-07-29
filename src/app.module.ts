@@ -5,11 +5,12 @@ import { BookmarkModule } from './bookmark/bookmark.module';
 import { kycModule } from './KYC patient/kyc.module';
 import { DoctorKycModule } from './KYCDoctor/KycDoctor.module';
 import { ConfigModule } from '@nestjs/config';
-import { HospitalKycModule } from 'Hospital Kyc/hospital-kyc-module';
+import { HospitalKycModule } from 'src/Hospital Kyc/hospital-kyc-module';
+import { AdminModule } from './admin/admin.module';
 
 
 @Module({
-  imports: [AuthModule, UserModule, BookmarkModule, kycModule, DoctorKycModule,HospitalKycModule ,ConfigModule.forRoot({isGlobal: true})],
+  imports: [AuthModule, UserModule, BookmarkModule, kycModule, DoctorKycModule,HospitalKycModule,AdminModule ,ConfigModule.forRoot({isGlobal: true})],
  
 })
 export class AppModule {}
