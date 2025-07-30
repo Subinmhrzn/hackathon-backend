@@ -7,10 +7,11 @@ import { DoctorKycModule } from './KYCDoctor/KycDoctor.module';
 import { ConfigModule } from '@nestjs/config';
 import { HospitalKycModule } from 'src/Hospital Kyc/hospital-kyc-module';
 import { AdminModule } from './admin/admin.module';
+import { HospitalDoctorModule } from './Hospital Doctor/hospital-doctor.module';
 
 
 @Module({
-  imports: [AuthModule, UserModule, BookmarkModule, kycModule, DoctorKycModule,HospitalKycModule,AdminModule ,ConfigModule.forRoot({isGlobal: true})],
+  imports: [AuthModule, UserModule, BookmarkModule, kycModule, DoctorKycModule,HospitalKycModule,AdminModule,HospitalDoctorModule ,ConfigModule.forRoot({isGlobal: true})],
  
 })
 export class AppModule {}

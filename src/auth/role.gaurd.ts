@@ -17,3 +17,15 @@ export class RolesGuard implements CanActivate {
     );
   }
 }
+
+export class HospitalRolesGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    const user = request.user;
+
+    console.log(user)
+
+    // ✅ Just use plain object
+    return user && user.role === 'HOSPITAL';
+  }
+}

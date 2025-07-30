@@ -10,7 +10,7 @@ export class DoctorKyc{
     @Prop({required: 'true'}) dob: string;
     @Prop({required: 'true'}) address: string;
     @Prop({required: 'true'}) phoneNumber: string;
-    @Prop({required: 'true'}) licenseNumber: string;
+    @Prop({required: 'true', unique: 'true'}) licenseNumber: string;
     @Prop({required: 'true'}) specialization: string;
     @Prop({required: 'true'}) experiencedYear: string;
 

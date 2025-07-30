@@ -6,14 +6,15 @@ import { DoctorKycService } from "./KycDoctor.service";
 
 @Module(
     {
-        imports:[
+        imports: [
             MongooseModule.forFeature([{
                 name: DoctorKyc.name,
                 schema: DoctorKycSchema
             }])
         ],
-        controllers:[DoctorKycController],
-        providers:[DoctorKycService],
+        controllers: [DoctorKycController],
+        providers: [DoctorKycService],
+        exports: [DoctorKycService]
     }
 )
-export class DoctorKycModule{}
+export class DoctorKycModule { }
