@@ -20,5 +20,5 @@ export class AddDoctorDto{
     @IsArray()
     @ValidateNested({each: true})
     @Type(()=>TimeSlotDto)
-    availability: TimeSlotDto
+    availability: TimeSlotDto[]
 }

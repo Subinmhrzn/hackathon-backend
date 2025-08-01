@@ -45,7 +45,7 @@ export class HospitalDoctorController {
       throw new ForbiddenException('Doctor is not verified');
     }
 
-    return this.service.addDoctor(user.userId, dto.doctorLicenseNumber, dto.availability);
+    return this.service.addDoctor(user.userId, dto.doctorLicenseNumber,dto.availability[]);
   }
 
   @Delete('remove')
