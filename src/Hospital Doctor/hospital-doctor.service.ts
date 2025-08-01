@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { HospitalDoctor, HospitalDoctorDocument } from './Schema/hospital-doctor.schema';
@@ -22,14 +22,14 @@ export class HospitalDoctorService {
 
   
 
-  async addDoctor(hospitalId: string, licenseNumber: string) {
+  async addDoctor(hospitalId: string, licenseNumber: string, avalibility:{day: string, from: string, to:string}) {
     const exists = await this.doctorModel.findOne({ hospitalId, doctorLicenseNumber: licenseNumber });
     
     if (exists) {
       throw new BadRequestException('Doctor already registered in this hospital.');
     }
 
-    const newDoctor = new this.doctorModel({ hospitalId, doctorLicenseNumber: licenseNumber });
+    const newDoctor = new this.doctorModel({ hospitalId, doctorLicenseNumber: licenseNumber, availability: avalibility });
     return newDoctor.save();
   }
 
@@ -44,5 +44,13 @@ export class HospitalDoctorService {
     }
 
     return { message: 'Doctor removed successfully' };
+  }
+  async getDoctorsByHospital(hospitalId: string) {
+    return this.doctorModel.find({ hospitalId }).populate('doctorId');
+  }
+  async getDoctorAvailability(hospitalId: string, doctorLicenseNumber: string) {
+    const doc = await this.doctorModel.findOne({ doctorLicenseNumber, hospitalId });
+    if (!doc) throw new NotFoundException('Doctor not found in hospital');
+    return doc.availability;
   }
 }

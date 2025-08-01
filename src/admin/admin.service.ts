@@ -31,7 +31,7 @@ export class AdminService{
 
   async rejectHospital(id: string) {
     return this.hospitalModel.findByIdAndUpdate(id, {
-      status: 'Rejected',
+      status: 'isRejected',
       verifiedBy: 'ADMIN',
     }, { new: true });
   }
@@ -50,7 +50,7 @@ export class AdminService{
   }
   async rejectDoctor(id: string){
     return this.doctorModel.findByIdAndUpdate(id,{
-        status:"rejected",
+        status:"isRejected",
         verifiedBy:"ADMIN",
         verifiedAt: new Date()
     }, {new: true})
@@ -61,12 +61,18 @@ export class AdminService{
   }
 
   async verifyPatient(id: string) {
-    return this.kycModel.findByIdAndUpdate(id, { isVerified: true }, { new: true });
+    return this.kycModel.findByIdAndUpdate(id, 
+      { status: "isVerified",
+        verifiedAt:new Date(),
+        verifiedBy:"ADMIN"
+       }, { new: true });
   }
 
   async rejectPatient(id: string){
     return this.kycModel.findByIdAndUpdate(id,{
-    
+      status:"isRejected",
+      verifiedAt: new Date(),
+      verifiedBy:"ADMIN"
     })
   }
 }

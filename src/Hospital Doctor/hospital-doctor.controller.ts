@@ -6,6 +6,8 @@ import {
   Req,
   UseGuards,
   ForbiddenException,
+  Get,
+  Param,
 } from '@nestjs/common';
 
 import { HospitalDoctorService } from './hospital-doctor.service';
@@ -19,9 +21,9 @@ import { DoctorKycService } from 'src/KYCDoctor/KycDoctor.service';
 @UseGuards(JwtAuthGuard, HospitalRolesGuard)
 export class HospitalDoctorController {
   constructor(
-    private readonly service: HospitalDoctorService, 
+    private readonly service: HospitalDoctorService,
     private readonly docservice: DoctorKycService
-  ) {}
+  ) { }
 
   @Post('add')
   async addDoctor(@Req() req: Request, @Body() dto: AddDoctorDto) {
@@ -31,19 +33,19 @@ export class HospitalDoctorController {
       throw new ForbiddenException('Only hospitals can perform this action.');
     }
 
-    console.log({user})
+    console.log({ user })
     const isVerified = await this.service.isHospitalVerified(user.userId);
-    console.log({isVerified})
+    console.log({ isVerified })
     if (!isVerified) {
       throw new ForbiddenException('Hospital is not verified.');
     }
 
-    const docisVerified = await this.docservice.isDoctorVerified(user.userId)
-    if(!docisVerified){
+    const docisVerified = await this.docservice.isDoctorVerified(dto.doctorLicenseNumber)
+    if (!docisVerified) {
       throw new ForbiddenException('Doctor is not verified');
     }
 
-    return this.service.addDoctor(user.userId, dto.doctorLicenseNumber);
+    return this.service.addDoctor(user.userId, dto.doctorLicenseNumber, dto.availability);
   }
 
   @Delete('remove')
@@ -61,4 +63,18 @@ export class HospitalDoctorController {
 
     return this.service.removeDoctor(user._id, dto.doctorLicenseNumber);
   }
+  @Get(':hospitalLicense/doctors/:doctorLicense/availability')
+  getAvailability(
+    @Param('hospitalLicense') hospitalLicense: string,
+    @Param('doctorLicense') doctorLicense: string,
+  ) {
+    return this.service.getDoctorAvailability(hospitalLicense, doctorLicense);
+  }
+
+  @Get(':hospitalLicense/doctors')
+  getDoctorsByHospital(@Param('hospitalLicense') hospitalLicense: string) {
+    return this.service.getDoctorsByHospital(hospitalLicense);
+  }
+
+
 }

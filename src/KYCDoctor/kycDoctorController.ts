@@ -11,12 +11,11 @@ export class DoctorKycController {
   @Post('create')
   @UseGuards(JwtAuthGuard)
   async create(@Req() req, @Body() dto: CreateDoctorKycDto): Promise<DoctorKyc> {
-    const loggedInUser = req.user as any;  // contains userId from JWT
+    const loggedInUser = req.user as any;
 
-    // Use the userId from the validated JWT token
     const userId = loggedInUser.userId;
 
-    // Optional: If you want to check any permissions, you can here
+    
 
     return this.doctorKycService.create(userId, dto);
   }
@@ -24,6 +23,5 @@ export class DoctorKycController {
   @Get('license/:licenseNumber')
   async getDoctorByLicense(@Param('licenseNumber') licenseNumber: string) {
     return this.doctorKycService.findByLicenseNumber(licenseNumber)
-    console.log(licenseNumber)
   }
 }
